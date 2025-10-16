@@ -40,6 +40,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { useAlert } from '@/components/ui/alert-dialog';
 import { useToast } from '@/components/ui/toast';
+import { useTimeoutManager } from '@/hooks/use-timeout-manager';
 
 // Types for Patient Flow & Bed Management
 export interface BedStatus {
@@ -366,6 +367,7 @@ interface PatientFlowManagementProps {
 export function PatientFlowManagement({ className }: PatientFlowManagementProps) {
   const { showAlert } = useAlert();
   const { showSuccess, showInfo, showWarning, showError } = useToast();
+  const { scheduleTimeout } = useTimeoutManager();
   const [selectedTab, setSelectedTab] = useState<'overview' | 'beds' | 'discharge' | 'ed_flow' | 'or_schedule' | 'analytics'>('overview');
   const [bedStatuses] = useState<BedStatus[]>(mockBedStatuses);
   const [edMetrics] = useState<EDMetrics>(mockEDMetrics);
@@ -379,7 +381,7 @@ export function PatientFlowManagement({ className }: PatientFlowManagementProps)
     setIsRefreshing(true);
     showInfo('Refreshing', 'Updating AI patient flow predictions and bed management analytics...');
     
-    setTimeout(() => {
+    scheduleTimeout(() => {
       setIsRefreshing(false);
       showSuccess('Data Updated', 'Patient flow intelligence refreshed with latest AI predictions');
     }, 2000);

@@ -39,6 +39,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { useAlert } from '@/components/ui/alert-dialog';
 import { useToast } from '@/components/ui/toast';
+import { useTimeoutManager } from '@/hooks/use-timeout-manager';
 
 // Types for Supply Chain Intelligence
 export interface InventoryItem {
@@ -439,6 +440,7 @@ interface SupplyChainIntelligenceProps {
 export function SupplyChainIntelligence({ className }: SupplyChainIntelligenceProps) {
   const { showAlert } = useAlert();
   const { showSuccess, showInfo, showWarning, showError } = useToast();
+  const { scheduleTimeout } = useTimeoutManager();
   const [selectedTab, setSelectedTab] = useState<'overview' | 'inventory' | 'vendors' | 'reorder' | 'analytics'>('overview');
   const [inventoryItems] = useState<InventoryItem[]>(mockInventoryItems);
   const [vendors] = useState<Vendor[]>(mockVendors);
@@ -451,7 +453,7 @@ export function SupplyChainIntelligence({ className }: SupplyChainIntelligencePr
     setIsRefreshing(true);
     showInfo('Refreshing', 'Updating AI supply chain predictions and inventory analytics...');
     
-    setTimeout(() => {
+    scheduleTimeout(() => {
       setIsRefreshing(false);
       showSuccess('Data Updated', 'Supply chain intelligence refreshed with latest AI predictions');
     }, 2000);

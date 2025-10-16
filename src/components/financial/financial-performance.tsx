@@ -51,6 +51,7 @@ import {
 } from 'recharts';
 import { useAlert } from '@/components/ui/alert-dialog';
 import { useToast } from '@/components/ui/toast';
+import { useTimeoutManager } from '@/hooks/use-timeout-manager';
 
 // Types for Financial Performance & Revenue Optimization
 export interface ValueBasedContract {
@@ -423,6 +424,7 @@ interface FinancialPerformanceProps {
 export function FinancialPerformance({ className }: FinancialPerformanceProps) {
   const { showAlert } = useAlert();
   const { showSuccess, showInfo, showWarning, showError } = useToast();
+  const { scheduleTimeout } = useTimeoutManager();
   const [selectedTab, setSelectedTab] = useState<'overview' | 'value_based' | 'payer_negotiations' | 'denial_management' | 'cost_per_episode' | 'analytics'>('overview');
   const [valueBasedContracts] = useState<ValueBasedContract[]>(mockValueBasedContracts);
   const [payerNegotiations] = useState<PayerNegotiation[]>(mockPayerNegotiations);
@@ -435,7 +437,7 @@ export function FinancialPerformance({ className }: FinancialPerformanceProps) {
     setIsRefreshing(true);
     showInfo('Refreshing', 'Updating AI financial analytics and revenue optimization insights...');
     
-    setTimeout(() => {
+    scheduleTimeout(() => {
       setIsRefreshing(false);
       showSuccess('Data Updated', 'Financial performance intelligence refreshed with latest AI predictions');
     }, 2000);

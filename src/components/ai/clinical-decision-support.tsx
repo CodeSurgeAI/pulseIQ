@@ -21,6 +21,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { useAlert } from '@/components/ui/alert-dialog';
 import { useToast } from '@/components/ui/toast';
+import { useTimeoutManager } from '@/hooks/use-timeout-manager';
 
 // Types for CDSS
 export interface PatientRiskScore {
@@ -287,6 +288,7 @@ interface ClinicalDecisionSupportProps {
 export function ClinicalDecisionSupport({ className }: ClinicalDecisionSupportProps) {
   const { showAlert } = useAlert();
   const { showSuccess, showInfo, showWarning, showError } = useToast();
+  const { scheduleTimeout } = useTimeoutManager();
   const [selectedTab, setSelectedTab] = useState<'overview' | 'patients' | 'alerts' | 'pathways'>('overview');
   const [patients, setPatients] = useState<PatientRiskScore[]>(mockPatientRisks);
   const [alerts, setAlerts] = useState<ClinicalAlert[]>(mockClinicalAlerts);
@@ -299,7 +301,7 @@ export function ClinicalDecisionSupport({ className }: ClinicalDecisionSupportPr
     showInfo('Refreshing', 'Updating AI predictions and patient risk scores...');
     
     // Simulate API call
-    setTimeout(() => {
+    scheduleTimeout(() => {
       setIsRefreshing(false);
       showSuccess('Data Updated', 'AI predictions and risk scores have been refreshed');
     }, 2000);

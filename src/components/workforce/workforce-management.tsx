@@ -31,6 +31,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { useAlert } from '@/components/ui/alert-dialog';
 import { useToast } from '@/components/ui/toast';
+import { useTimeoutManager } from '@/hooks/use-timeout-manager';
 
 // Types for Workforce Management
 export interface StaffMember {
@@ -410,6 +411,7 @@ interface WorkforceManagementProps {
 export function WorkforceManagement({ className }: WorkforceManagementProps) {
   const { showAlert } = useAlert();
   const { showSuccess, showInfo, showWarning, showError } = useToast();
+  const { scheduleTimeout } = useTimeoutManager();
   const [selectedTab, setSelectedTab] = useState<'overview' | 'scheduling' | 'burnout' | 'skills' | 'analytics'>('overview');
   const [staffMembers] = useState<StaffMember[]>(mockStaffMembers);
   const [patientLoads] = useState<PatientLoad[]>(mockPatientLoads);
@@ -422,7 +424,7 @@ export function WorkforceManagement({ className }: WorkforceManagementProps) {
     setIsRefreshing(true);
     showInfo('Refreshing', 'Updating AI workforce predictions and staffing analytics...');
     
-    setTimeout(() => {
+    scheduleTimeout(() => {
       setIsRefreshing(false);
       showSuccess('Data Updated', 'Workforce management data refreshed with latest AI predictions');
     }, 2000);
