@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef } from 'react';
 
-type TimeoutId = ReturnType<typeof setTimeout>;
+type TimeoutId = ReturnType<typeof window.setTimeout>;
 
 /**
  * Centralises timeout management so components do not leak handlers
@@ -31,16 +31,13 @@ export function useTimeoutManager() {
     [removeId]
   );
 
-  const clearManagedTimeout = useCallback(
-    (timeoutId: TimeoutId) => {
-      clearTimeout(timeoutId);
-      removeId(timeoutId);
-    },
-    [removeId]
-  );
+  const clearManagedTimeout = useCallback((timeoutId: TimeoutId) => {
+    window.clearTimeout(timeoutId);
+    removeId(timeoutId);
+  }, [removeId]);
 
   const clearAllTimeouts = useCallback(() => {
-    timeoutsRef.current.forEach((timeoutId) => clearTimeout(timeoutId));
+    timeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
     timeoutsRef.current = [];
   }, []);
 
@@ -52,4 +49,3 @@ export function useTimeoutManager() {
     clearAllTimeouts,
   };
 }
-
