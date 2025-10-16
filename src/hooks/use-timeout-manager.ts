@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef } from 'react';
 
-type TimeoutId = ReturnType<typeof window.setTimeout>;
+type TimeoutId = number;
 
 /**
  * Centralises timeout management so components do not leak handlers
