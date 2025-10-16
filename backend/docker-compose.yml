@@ -1,0 +1,24 @@
+﻿version: "3.9"
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: hospital-mongo
+    environment:
+      MONGO_INITDB_DATABASE: hospital_kpi
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+  backend:
+    build: .
+    container_name: hospital-kpi-backend
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/hospital_kpi
+      JWT_SECRET: c3VwZXItc2VjcmV0LWJhc2U2NA==
+      JWT_EXPIRATION_MINUTES: 60
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+volumes:
+  mongo-data:

@@ -1,0 +1,75 @@
+{
+  "app": {
+    "name": "PulseIQ",
+    "version": "1.0.0",
+    "environment": "development"
+  },
+  "authentication": {
+    "enableLogin": false,
+    "defaultUser": {
+      "id": "1",
+      "name": "System Administrator",
+      "email": "admin@hospital-kpi.com",
+      "role": "admin",
+      "hospitalId": "1",
+      "isActive": true
+    },
+    "sessionTimeout": 86400000,
+    "requireEmailVerification": false
+  },
+  "features": {
+    "aiIntegration": true,
+    "federatedLearning": true,
+    "realTimeUpdates": false,
+    "offlineMode": false
+  },
+  "ui": {
+    "theme": "default",
+    "enableDarkMode": false,
+    "defaultLanguage": "en",
+    "showWelcomeTour": true,
+    "screens": {
+      "admin": {
+        "dashboard": true,
+        "users": false,
+        "hospitals": false,
+        "userRegistrationDetails": false,
+        "clinicalDecisionSupport": true,
+        "workforceManagement": true,
+        "supplyChainIntelligence": true,
+        "patientFlowManagement": true,
+        "financialPerformance": true
+      },
+      "director": {
+        "dashboard": true,
+        "alerts": true,
+        "leaderboard": true,
+        "clinicalDecisionSupport": true,
+        "workforceManagement": true,
+        "supplyChainIntelligence": true,
+        "patientFlowManagement": true,
+        "financialPerformance": true
+      },
+      "manager": {
+        "dashboard": true,
+        "kpiForm": true,
+        "recommendations": true,
+        "clinicalDecisionSupport": true,
+        "workforceManagement": true,
+        "supplyChainIntelligence": true,
+        "patientFlowManagement": true,
+        "financialPerformance": true
+      }
+    }
+  },
+  "api": {
+    "baseUrl": "http://localhost:8080/api",
+    "timeout": 30000,
+    "retryAttempts": 3
+  },
+  "monitoring": {
+    "enableAnalytics": false,
+    "enableErrorReporting": false,
+    "enablePerformanceTracking": false
+  }
+}

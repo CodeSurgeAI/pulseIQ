@@ -1,0 +1,32 @@
+﻿server:
+  port: 8080
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/hospital_kpi
+      auto-index-creation: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: hospital-kpi-backend
+jwt:
+  issuer: hospital-kpi-saas
+  secret: ${JWT_SECRET:change-me}
+  expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+logging:
+  level:
+    root: INFO
+    com.kpi.hospital: DEBUG
