@@ -31,9 +31,9 @@
     "screens": {
       "admin": {
         "dashboard": true,
-        "users": true,
-        "hospitals": true,
-        "userRegistrationDetails": true,
+        "users": false,
+        "hospitals": false,
+        "userRegistrationDetails": false,
         "clinicalDecisionSupport": true,
         "workforceManagement": true,
         "supplyChainIntelligence": true,

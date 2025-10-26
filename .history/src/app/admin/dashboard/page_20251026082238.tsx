@@ -304,7 +304,44 @@ function AdminDashboardPage() {
           </div>
         </div>
 
-        
+        {/* KPI Overview */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900">KPI Overview</h2>
+            <div className="flex items-center gap-2">
+              <Button variant="premium" onClick={() => router.push('/manager/kpi-form')} icon={<Plus className="h-4 w-4" />}>Submit KPIs</Button>
+              <Button variant="outline" onClick={() => router.push('/admin/financial-performance')} icon={<BarChart3 className="h-4 w-4" />}>View Analytics</Button>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {kpiCategories.map(({ key, title, description }) => (
+              <Card key={key} className="hover:shadow-md transition-shadow duration-200">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle>{title}</CardTitle>
+                      <CardDescription>{description}</CardDescription>
+                    </div>
+                    <div className="text-xs text-gray-500">{kpisByCategory[key]?.length || 0} KPIs</div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <ul className="divide-y divide-gray-100">
+                    {(kpisByCategory[key] || []).map((kpi) => (
+                      <li key={kpi.id} className="py-2 flex items-center justify-between">
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{kpi.name}</p>
+                          <p className="text-xs text-gray-500 truncate">Target: {kpi.targetValue !== undefined ? kpi.targetValue : '—'}{kpi.unit ? ` ${kpi.unit}` : ''} • {kpi.isHigherBetter ? 'Higher is better' : 'Lower is better'}</p>
+                        </div>
+                        <Button size="sm" variant="ghost" onClick={() => router.push('/manager/kpi-form')} icon={<Edit className="h-4 w-4" />}>Update</Button>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
 
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -633,51 +670,6 @@ function AdminDashboardPage() {
         {(() => {
           // Define default widgets for Admin dashboard
           const defaultWidgets = [
-            {
-              id: 'kpi-overview-widget',
-              title: 'KPI Overview',
-              component: (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-gray-900">KPI Overview</h2>
-                    <div className="flex items-center gap-2">
-                      <Button variant="premium" onClick={() => router.push('/manager/kpi-form')} icon={<Plus className="h-4 w-4" />}>Submit KPIs</Button>
-                      <Button variant="outline" onClick={() => router.push('/admin/financial-performance')} icon={<BarChart3 className="h-4 w-4" />}>View Analytics</Button>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {kpiCategories.map(({ key, title, description }) => (
-                      <Card key={key} className="hover:shadow-md transition-shadow duration-200">
-                        <CardHeader>
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <CardTitle>{title}</CardTitle>
-                              <CardDescription>{description}</CardDescription>
-                            </div>
-                            <div className="text-xs text-gray-500">{kpisByCategory[key]?.length || 0} KPIs</div>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pt-0">
-                          <ul className="divide-y divide-gray-100">
-                            {(kpisByCategory[key] || []).map((kpi) => (
-                              <li key={kpi.id} className="py-2 flex items-center justify-between">
-                                <div className="min-w-0">
-                                  <p className="text-sm font-medium text-gray-900 truncate">{kpi.name}</p>
-                                  <p className="text-xs text-gray-500 truncate">Target: {kpi.targetValue !== undefined ? kpi.targetValue : '—'}{kpi.unit ? ` ${kpi.unit}` : ''} • {kpi.isHigherBetter ? 'Higher is better' : 'Lower is better'}</p>
-                                </div>
-                                <Button size="sm" variant="ghost" onClick={() => router.push('/manager/kpi-form')} icon={<Edit className="h-4 w-4" />}>Update</Button>
-                              </li>
-                            ))}
-                          </ul>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              ),
-              order: 0,
-              enabled: true,
-            },
             {
               id: 'cdss-widget',
               title: 'Clinical Decision Support',

@@ -120,6 +120,7 @@ const navigationItems: NavItem[] = [
     roles: ['admin'],
     settingsModule: 'kpiForm',
     // No admin config toggle; rely on settingsModule and default visibility
+    configKey: undefined as any,
   },
   
   // Director Navigation
@@ -309,7 +310,7 @@ export function Sidebar({ className }: SidebarProps) {
 
     // Check config-based screen visibility first
     if (item.configKey) {
-      const isScreenEnabled = configService.isScreenEnabled(user.role, item.configKey as string);
+      const isScreenEnabled = configService.isScreenEnabled(user.role, item.configKey);
       if (!isScreenEnabled) {
         return false;
       }

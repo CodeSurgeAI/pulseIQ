@@ -48,15 +48,10 @@ export function TopNav({ title, className }: TopNavProps) {
     const handleMarkAll = () => {
       markAllAsRead();
     };
-    const handleOpenSettings = () => {
-      setShowSettings(true);
-    };
     window.addEventListener('pulseiq:markAllNotifications', handleMarkAll as EventListener);
-    window.addEventListener('pulseiq:openSettings', handleOpenSettings as EventListener);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('pulseiq:markAllNotifications', handleMarkAll as EventListener);
-      window.removeEventListener('pulseiq:openSettings', handleOpenSettings as EventListener);
     };
   }, []);
 

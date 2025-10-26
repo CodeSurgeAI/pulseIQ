@@ -120,6 +120,7 @@ const navigationItems: NavItem[] = [
     roles: ['admin'],
     settingsModule: 'kpiForm',
     // No admin config toggle; rely on settingsModule and default visibility
+    configKey: undefined as any,
   },
   
   // Director Navigation

@@ -62,7 +62,7 @@ import configService from '@/utils/config';
 function AdminDashboardPage() {
   const { showAlert } = useAlert();
   const { showSuccess, showInfo, showWarning } = useToast();
-  const { settings, updateWidgetOrder, getWidgetOrder, resetWidgetOrder } = useSettingsStore();
+  const { settings } = useSettingsStore();
   const [isActivityLogOpen, setIsActivityLogOpen] = useState(false);
   const router = useRouter();
   
@@ -304,7 +304,44 @@ function AdminDashboardPage() {
           </div>
         </div>
 
-        
+        {/* KPI Overview */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900">KPI Overview</h2>
+            <div className="flex items-center gap-2">
+              <Button variant="premium" onClick={() => router.push('/manager/kpi-form')} icon={<Plus className="h-4 w-4" />}>Submit KPIs</Button>
+              <Button variant="outline" onClick={() => router.push('/admin/financial-performance')} icon={<BarChart3 className="h-4 w-4" />}>View Analytics</Button>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {kpiCategories.map(({ key, title, description }) => (
+              <Card key={key} className="hover:shadow-md transition-shadow duration-200">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle>{title}</CardTitle>
+                      <CardDescription>{description}</CardDescription>
+                    </div>
+                    <div className="text-xs text-gray-500">{kpisByCategory[key]?.length || 0} KPIs</div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <ul className="divide-y divide-gray-100">
+                    {(kpisByCategory[key] || []).map((kpi) => (
+                      <li key={kpi.id} className="py-2 flex items-center justify-between">
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{kpi.name}</p>
+                          <p className="text-xs text-gray-500 truncate">Target: {kpi.targetValue !== undefined ? kpi.targetValue : '—'}{kpi.unit ? ` ${kpi.unit}` : ''} • {kpi.isHigherBetter ? 'Higher is better' : 'Lower is better'}</p>
+                        </div>
+                        <Button size="sm" variant="ghost" onClick={() => router.push('/manager/kpi-form')} icon={<Edit className="h-4 w-4" />}>Update</Button>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
 
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -629,55 +666,9 @@ function AdminDashboardPage() {
           </Card>
         </div>
 
-        {/* Clinical AI Decision Support (Draggable & per-user persisted) */}
-        {(() => {
-          // Define default widgets for Admin dashboard
-          const defaultWidgets = [
-            {
-              id: 'kpi-overview-widget',
-              title: 'KPI Overview',
-              component: (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-gray-900">KPI Overview</h2>
-                    <div className="flex items-center gap-2">
-                      <Button variant="premium" onClick={() => router.push('/manager/kpi-form')} icon={<Plus className="h-4 w-4" />}>Submit KPIs</Button>
-                      <Button variant="outline" onClick={() => router.push('/admin/financial-performance')} icon={<BarChart3 className="h-4 w-4" />}>View Analytics</Button>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {kpiCategories.map(({ key, title, description }) => (
-                      <Card key={key} className="hover:shadow-md transition-shadow duration-200">
-                        <CardHeader>
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <CardTitle>{title}</CardTitle>
-                              <CardDescription>{description}</CardDescription>
-                            </div>
-                            <div className="text-xs text-gray-500">{kpisByCategory[key]?.length || 0} KPIs</div>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pt-0">
-                          <ul className="divide-y divide-gray-100">
-                            {(kpisByCategory[key] || []).map((kpi) => (
-                              <li key={kpi.id} className="py-2 flex items-center justify-between">
-                                <div className="min-w-0">
-                                  <p className="text-sm font-medium text-gray-900 truncate">{kpi.name}</p>
-                                  <p className="text-xs text-gray-500 truncate">Target: {kpi.targetValue !== undefined ? kpi.targetValue : '—'}{kpi.unit ? ` ${kpi.unit}` : ''} • {kpi.isHigherBetter ? 'Higher is better' : 'Lower is better'}</p>
-                                </div>
-                                <Button size="sm" variant="ghost" onClick={() => router.push('/manager/kpi-form')} icon={<Edit className="h-4 w-4" />}>Update</Button>
-                              </li>
-                            ))}
-                          </ul>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              ),
-              order: 0,
-              enabled: true,
-            },
+        {/* Clinical AI Decision Support */}
+        <SortableDashboard
+          widgets={[
             {
               id: 'cdss-widget',
               title: 'Clinical Decision Support',
@@ -739,41 +730,14 @@ function AdminDashboardPage() {
               order: 5,
               enabled: settings?.dashboardModules?.financialPerformance || false
             }
-          ].filter(widget => widget.enabled);
-
-          // Apply saved order for this user/dashboard
-          const savedOrder = getWidgetOrder('admin'); // array of widget IDs
-          const orderedWidgets = savedOrder.length
-            ? [...defaultWidgets]
-                .sort((a, b) => {
-                  const ia = savedOrder.indexOf(a.id);
-                  const ib = savedOrder.indexOf(b.id);
-                  return (ia === -1 ? Number.MAX_SAFE_INTEGER : ia) - (ib === -1 ? Number.MAX_SAFE_INTEGER : ib);
-                })
-                .map((w, idx) => ({ ...w, order: idx }))
-            : defaultWidgets;
-
-          return (
-            <SortableDashboard
-              widgets={orderedWidgets}
-              onWidgetOrderChange={(newOrder) => {
-                const idOrder = newOrder
-                  .filter(w => w.enabled)
-                  .sort((a, b) => a.order - b.order)
-                  .map(w => w.id);
-                updateWidgetOrder('admin', idOrder);
-              }}
-              onSaveOrder={() => {
-                // Persisted immediately; this provides user feedback via SortableDashboard
-              }}
-              onResetOrder={() => {
-                resetWidgetOrder('admin');
-              }}
-              className="grid grid-cols-1 lg:grid-cols-3 gap-6"
-              gridCols={3}
-            />
-          );
-        })()}
+          ].filter(widget => widget.enabled)} // Filter out disabled widgets
+          onWidgetOrderChange={(newOrder) => {
+            console.log('Widget order changed:', newOrder);
+            // You could save this to the store here
+          }}
+          className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+          gridCols={3}
+        />
 
         {/* AI-Powered Clinical Intelligence */}
         {settings?.dashboardModules?.clinicalAI && (

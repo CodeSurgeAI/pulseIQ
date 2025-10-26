@@ -1,0 +1,115 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "typecheck",
+			"type": "shell",
+			"command": "npm run -s typecheck",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc - eslint"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "npm run -s build",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc - eslint"
+			],
+			"group": "build"
+		},
+		{
+			"label": "typecheck",
+			"type": "shell",
+			"command": "npm run -s typecheck",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc - eslint"
+			],
+			"group": "build"
+		},
+		{
+			"label": "typecheck",
+			"type": "shell",
+			"command": "npm run -s typecheck",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc - eslint"
+			],
+			"group": "build"
+		},
+		{
+			"label": "typecheck",
+			"type": "shell",
+			"command": "npm run -s typecheck",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc - eslint"
+			],
+			"group": "build"
+		},
+		{
+			"label": "typecheck",
+			"type": "shell",
+			"command": "npm run -s typecheck",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc - eslint"
+			],
+			"group": "build"
+		},
+		{
+			"label": "typecheck",
+			"type": "shell",
+			"command": "npm run -s typecheck",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc - eslint"
+			],
+			"group": "build"
+		},
+		{
+			"label": "typecheck",
+			"type": "shell",
+			"command": "npm run -s typecheck",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc - eslint"
+			],
+			"group": "build"
+		},
+		{
+			"label": "typecheck",
+			"type": "shell",
+			"command": "npm run -s typecheck",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc - eslint"
+			],
+			"group": "build"
+		},
+		{
+			"label": "typecheck",
+			"type": "shell",
+			"command": "npm run -s typecheck",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc - eslint"
+			],
+			"group": "build"
+		}
+	]
+}

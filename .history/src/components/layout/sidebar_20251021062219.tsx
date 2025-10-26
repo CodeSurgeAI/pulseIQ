@@ -119,7 +119,8 @@ const navigationItems: NavItem[] = [
     icon: 'ClipboardList',
     roles: ['admin'],
     settingsModule: 'kpiForm',
-    // No admin config toggle; rely on settingsModule and default visibility
+    // No explicit admin config key for KPI form; default true via isScreenEnabled fallback
+    configKey: undefined as unknown as string,
   },
   
   // Director Navigation
@@ -309,7 +310,7 @@ export function Sidebar({ className }: SidebarProps) {
 
     // Check config-based screen visibility first
     if (item.configKey) {
-      const isScreenEnabled = configService.isScreenEnabled(user.role, item.configKey as string);
+      const isScreenEnabled = configService.isScreenEnabled(user.role, item.configKey);
       if (!isScreenEnabled) {
         return false;
       }
